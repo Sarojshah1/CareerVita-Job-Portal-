@@ -1,0 +1,34 @@
+import React from "react";
+import {  NavLink } from "react-router-dom";
+
+const Login: React.FC = () => {
+    return (
+       <>
+       <div className="min-h-screen flex flex-col items-center bg-zinc-100 dark:bg-zinc-900">
+       <div className="bg-primary text-white font-bold  text-center  py-6 rounded w-full">Login</div>
+          <main className="w-full max-w-md mx-auto mt-16  bg-white dark:bg-zinc-800 shadow-sm rounded-lg">
+            <div className="px-8 py-6">
+              <form className="">
+                <div className="mb-4 justify-center rounded place-items-center">
+                  <label htmlFor="username" className="block text-zinc-700 dark:text-zinc-300">Username</label>
+                  <input type="text" id="username" className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Username *" required/>
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="password" className="block text-zinc-700 dark:text-zinc-300">Password</label>
+                  <input type="password" id="password" className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Password *" required/>
+                </div>
+                <div className="mb-4">
+                  <button type="submit" className="w-full bg-primary text-white py-2 rounded">Login</button>
+                </div>
+                <div className="text-center text-zinc-700 dark:text-zinc-300">
+                  Not a member?  <NavLink to="/register" className="text-primary text-semibold hover:text-bold "><span>Register</span></NavLink> 
+                </div>
+              </form>
+            </div>
+          </main>
+        </div>
+       </>
+    );
+};
+
+export default Login;
