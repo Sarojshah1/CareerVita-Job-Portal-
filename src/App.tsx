@@ -13,6 +13,7 @@ import Details from "./Components/Details/Details";
 import Companies from "./Components/Companies/Companies";
 import UserProfile from "./Components/UserProfile/UserProfile";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import CompanyJob from "./Components/Companies/Company_Card/JobAccordingtoCompany.tsx/CompanyJob";
 
 const AppLayout = () => (
   <>
@@ -70,6 +71,10 @@ function App() {
           path: '/jobseeker',
           element: <UserProfile />,
         },
+        {
+          path: '/company/jobs',
+          element: <CompanyJob  />,
+        },
       ],
     },
   ]);
@@ -84,3 +89,4 @@ function App() {
 }
 
 export default App;
+

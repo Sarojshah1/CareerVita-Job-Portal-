@@ -1,14 +1,22 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface CompanyCardProps {
     companyName: string;
-    location: string;
+    location?: string;
     isOpenPosition: boolean;
     positionCount: number;
     isFeatured?: boolean; 
+    companyId: string;
   }
 
-const CompanyCard:React.FC<CompanyCardProps> = ({companyName, location, isOpenPosition, positionCount, isFeatured = false,}) => {
+const CompanyCard:React.FC<CompanyCardProps> = ({companyName, location, isOpenPosition, positionCount, isFeatured = false,companyId}) => {
+  const navigate = useNavigate();
+
+  const handleOpenPositionsClick = () => {
+    // Navigate to the company's jobs page using the companyId
+    navigate(`/company/jobs`,{ state: { companyId } });
+  };
     return (
         <div className="bg-white hover:shadow-primary dark:bg-zinc-800 p-4 rounded-lg shadow-md hover:shadow-2xl hover:translate-y-2">
         <div className="flex justify-between items-center mb-2">
@@ -18,7 +26,7 @@ const CompanyCard:React.FC<CompanyCardProps> = ({companyName, location, isOpenPo
         )}
         </div>
         <p className="text-zinc-600 dark:text-zinc-400 mb-4"><i className="fas fa-map-marker-alt"></i> {location}</p>
-        <button className="bg-primary  text-white px-4 py-2 rounded-lg w-full">{isOpenPosition ? `Open Positions (${positionCount})` : 'No Open Positions'}</button>
+        <button onClick={handleOpenPositionsClick}  className="bg-primary  text-white px-4 py-2 rounded-lg w-full">{isOpenPosition ? `Open Positions (${positionCount})` : 'No Open Positions'}</button>
       </div>
     );
 };

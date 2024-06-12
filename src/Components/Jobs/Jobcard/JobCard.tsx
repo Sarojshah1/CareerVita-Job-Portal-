@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface jobcomponent{
@@ -18,6 +18,18 @@ interface jobcomponent{
 
 const JobCard:React.FC<jobcomponent> = ({id,title,work_Type,job_Type,description,salary,postedDate,location,expiryDate,experience}) => {
     const navigate = useNavigate();
+    const [readMore, setReadMore] = useState(false);
+
+  const toggleReadMore = () => {
+    setReadMore(!readMore);
+  };
+
+  const truncateDescription = (text: string): string => {
+    if (text.length > 30) {
+      return text.slice(0,30) + '...';
+    }
+    return text;
+  };
 
   const handleViewDetails = () => {
     navigate(`/details/${id}`, { state: { title, job_Type, postedDate, location, salary, work_Type, description,expiryDate,experience } });
@@ -28,9 +40,14 @@ const JobCard:React.FC<jobcomponent> = ({id,title,work_Type,job_Type,description
             {title}
           </h2>
           <p className="text-sm text-zinc-600 dark:text-zinc-400">{job_Type}• {location} • {work_Type}</p>
-          <p className="mt-2 text-zinc-700 dark:text-zinc-300">
-          {description}
-          </p>
+          <p className="mt-2 text-gray-700">
+        {readMore ? description : truncateDescription(description)}
+        {!readMore && description.length > 30 && (
+          <button onClick={toggleReadMore} className="text-primary hover:underline focus:outline-none ml-2">
+          {readMore ? 'Read less' : 'Read more'}
+        </button>
+        )}
+      </p>
           <div className="mt-4 flex justify-between items-center">
             <span className="text-lg font-bold text-zinc-900 dark:text-zinc-100">{salary}</span>
             <span className="text-sm text-zinc-600 dark:text-zinc-400">{postedDate}</span>
