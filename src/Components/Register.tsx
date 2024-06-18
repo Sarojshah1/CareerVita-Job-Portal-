@@ -19,6 +19,21 @@ const Register: React.FC = () => {
     mutationFn: (requestData: FormValues) => {
       return axios.post("http://localhost:8080/users", requestData);
     },
+    onSuccess: (data: any) => {
+      const userId = data?.data?.userId;
+      console.log(userId);
+      alert(data?.message);
+      const values = data?.data; // Assuming your response structure has userId
+      if (values.userType === '1') {
+          navigate('/jobseeker', { state: { userId } });
+      } else {
+          navigate('/companyProfile', { state: { userId } });
+      }
+  },
+  onError: (error: Error) => {
+      console.error("Error:", error.message);
+      alert("Registration failed. Please try again."); // Add better error handling as per your app's requirements
+  }
   });
   const onSubmit: SubmitHandler<FormValues> = (values) => {
     apiCall.mutate(values, {

@@ -5,16 +5,20 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 interface Job {
-  id: number;
+  jobId: number;
   title: string;
   job_Type: string;
   postedDate: string;
   location: string;
   salary: string;
   work_Type: string;
+  qualification: string;
   description: string;
   expiryDate:string;
   experience:string;
+  company: {
+    name: string;
+  };
 }
 // const jobData = Array.from({ length: 6 }, (_, index) => ({
 //   id: index + 1,
@@ -29,10 +33,20 @@ interface Job {
 
 const JobsHome: React.FC = () => {
   const navigate = useNavigate();
+  const username = 'user';
+  const password = 'b586d350-3000-41f6-9217-fb7c7980cfe6';
   const getApiCall=useQuery(
     {
+      
       queryKey:["job_GET_ALL_API"],
-      queryFn: () => axios.get<Job[]>('http://localhost:8080/api/joblistings').then((response) => response.data),
+      queryFn: () => axios.get<Job[]>('http://localhost:8080/api/joblistings',{
+        auth: {
+          username,
+          password
+        }}).then((response) => response.data).catch(error => {
+        console.error('Error fetching job listings:', error);
+        throw error;
+      }),
     }
   )
   const jobsToShow = getApiCall.data ? getApiCall.data.slice(0, 6) : [];
@@ -64,8 +78,8 @@ const JobsHome: React.FC = () => {
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {jobsToShow.map((job) => (
           <JobCard
-            key={job.id}
-            id={job.id}
+            key={job.jobId}
+            id={job.jobId}
             title={job.title}
             job_Type={job.job_Type}
             postedDate={formatPostDate(job.postedDate)}
@@ -75,6 +89,8 @@ const JobsHome: React.FC = () => {
             description={job.description}
             experience={job.experience}
             expiryDate={job.expiryDate}
+            name={job.company.name}
+            qualification={job.qualification}
           />
         ))}
          

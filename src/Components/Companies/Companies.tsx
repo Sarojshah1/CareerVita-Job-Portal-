@@ -89,15 +89,25 @@ const Companies:React.FC = () => {
   // }, []);
 
   useEffect(() => {
+    const username = 'user';
+    const password = 'b586d350-3000-41f6-9217-fb7c7980cfe6';
     const fetchCompanies = async () => {
       try {
-        const response = await axios.get<Company[]>('http://localhost:8080/api/companies');
+        const response = await axios.get<Company[]>('http://localhost:8080/api/companies',{
+          auth: {
+            username,
+            password
+          }});
         const companies = response?.data?.data;
-        console.log(companies);
+        // console.log(companies);
         await Promise.all(
           companies.map(async (company:Company) => {
             try {
-              const jobListingsResponse = await axios.get<Job[]>(`http://localhost:8080/api/joblistings/company/${company.companyId}`);
+              const jobListingsResponse = await axios.get<Job[]>(`http://localhost:8080/api/joblistings/company/${company.companyId}`,{
+                auth: {
+                  username,
+                  password
+                }});
               const jobListings = jobListingsResponse.data;
               company.isOpenPosition = jobListings.length > 0;
               company.positionCount = jobListings.length;
@@ -108,7 +118,7 @@ const Companies:React.FC = () => {
         );
         setCompaniesData(companies);
       } catch (error) {
-        console.error('Error fetching company data:', error);
+        alert('Error fetching company data:');
       }
     };
 
@@ -120,7 +130,7 @@ const Companies:React.FC = () => {
         <div className="min-h-screen bg-zinc-200 dark:bg-zinc-900 p-6">
             <h2 className="text-center text-2xl font-bold text-zinc-800 dark:text-zinc-200 mb-6">Top Companies</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {companiesData.map((company, index) => (
+        {companiesData.map((company:Company, index) => (
           <CompanyCard
             key={index} // Ideally use a unique key from your data
             companyName={company.name}

@@ -2,28 +2,23 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import JobCard from './Jobcard/JobCard';
 import axios from 'axios';
 interface Job {
-  id: number;
+  jobId: number;
   title: string;
   job_Type: string;
   postedDate: string;
   location: string;
   salary: string;
   work_Type: string;
+  qualification: string;
   description: string;
   expiryDate:string;
   experience:string;
+  company: {
+    name: string;
+  };
 }
 
-// const jobData: Job[] = Array.from({ length: 50 }, (_, index) => ({
-//   id: index + 1,
-//   title: `Job Title ${index + 1}`,
-//   jobtype: 'Fulltime',
-//   postday: 'Today',
-//   location: 'Kathmandu',
-//   salary: `Npr.${40000 + index * 1000}`,
-//   worktype: 'Remote',
-//   description: `Description for job ${index + 1}: We are looking for a developer that will be the liaison between the company and its current and potential customers. The successful candidate...`,
-// }));
+
 
 const Jobs: React.FC  = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -37,9 +32,15 @@ const Jobs: React.FC  = () => {
     //     job.title.toLowerCase().includes(searchQuery.toLowerCase())
     // );
     useEffect(() => {
+      const username = 'user';
+      const password = 'b586d350-3000-41f6-9217-fb7c7980cfe6';
       const fetchData = async () => {
         try {
-          const response = await axios.get<Job[]>('http://localhost:8080/api/joblistings');
+          const response = await axios.get<Job[]>('http://localhost:8080/api/joblistings',{
+            auth: {
+              username,
+              password
+            }});
           setJobData(response.data);
         } catch (error) {
           console.error('Error fetching job data:', error);
@@ -48,6 +49,7 @@ const Jobs: React.FC  = () => {
   
       fetchData();
     }, []);
+    // console.log(jobData[1].company.name);
   
     const filteredJobs = jobData.filter(job =>
       job.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -70,6 +72,7 @@ const Jobs: React.FC  = () => {
         }
       }
     };
+    console.log(filteredJobs);
 
 
     return (
@@ -81,9 +84,10 @@ const Jobs: React.FC  = () => {
           </div>
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {filteredJobs.map((job) => (
+         
                     <JobCard
-                        key={job.id}
-                        id={job.id}
+                        key={job.jobId}
+                        id={job.jobId}
                         title={job.title}
                         job_Type={job.job_Type}
                         postedDate={formatPostDate(job.postedDate)}
@@ -93,6 +97,8 @@ const Jobs: React.FC  = () => {
                         description={job.description}
                         expiryDate={job.expiryDate}
                         experience={job.experience}
+                        name={job.company.name}
+                        qualification={job.qualification}
                     />
                 ))}
          

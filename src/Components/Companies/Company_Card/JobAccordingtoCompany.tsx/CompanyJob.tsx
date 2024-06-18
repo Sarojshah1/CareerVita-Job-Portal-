@@ -4,16 +4,20 @@ import axios from 'axios';
 import JobCard from '../../../Jobs/Jobcard/JobCard';
 import { useLocation } from 'react-router-dom';
 interface Job {
-  id: number;
+  jobId: number;
   title: string;
   job_Type: string;
   postedDate: string;
   location: string;
   salary: string;
   work_Type: string;
+  qualification: string;
   description: string;
   expiryDate:string;
   experience:string;
+  company: {
+    name: string;
+  };
 }
 
 // const jobData: Job[] = Array.from({ length: 50 }, (_, index) => ({
@@ -41,9 +45,15 @@ const CompanyJob: React.FC  = () => {
     //     job.title.toLowerCase().includes(searchQuery.toLowerCase())
     // );
     useEffect(() => {
+      const username = 'user';
+      const password = 'b586d350-3000-41f6-9217-fb7c7980cfe6';
       const fetchData = async () => {
         try {
-          const response = await axios.get<Job[]>(`http://localhost:8080/api/joblistings/company/${companyId}`);
+          const response = await axios.get<Job[]>(`http://localhost:8080/api/joblistings/company/${companyId}`,{
+            auth: {
+              username,
+              password
+            }});
           setJobData(response.data);
         } catch (error) {
           console.error('Error fetching job data:', error);
@@ -68,7 +78,6 @@ const CompanyJob: React.FC  = () => {
         if (postDate.toDateString() === yesterday.toDateString()) {
           return 'Yesterday';
         } else {
-          // Return actual date if not today or yesterday
           const options = { year: 'numeric', month: 'short', day: 'numeric' };
           return postDate.toLocaleDateString('en-US', options);
         }
@@ -86,8 +95,8 @@ const CompanyJob: React.FC  = () => {
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {filteredJobs.map((job) => (
                     <JobCard
-                        key={job.id}
-                        id={job.id}
+                        key={job.jobId}
+                        id={job.jobId}
                         title={job.title}
                         job_Type={job.job_Type}
                         postedDate={formatPostDate(job.postedDate)}
@@ -97,6 +106,8 @@ const CompanyJob: React.FC  = () => {
                         description={job.description}
                         expiryDate={job.expiryDate}
                         experience={job.experience}
+                        name={job.company.name}
+                        qualification={job.qualification}
                     />
                 ))}
          

@@ -7,6 +7,7 @@ const Details: React.FC = () => {
 
     const location = useLocation();
     const job = location.state;
+    console.log(job.name);
     
 
     if (!job) {
@@ -33,15 +34,15 @@ const Details: React.FC = () => {
 
     return (
         <div className="bg-zinc-100 dark:bg-zinc-900 p-4 md:p-8 rounded-lg">
-          <div className="bg-primary text-white   text-center text-2xl font-semibold   py-6 rounded w-full">{job.title} (Full time) – Match Company Limited</div>
+          <div className="bg-primary text-white   text-center text-2xl font-semibold   py-6 rounded w-full">{job.title} (Full time) – {job.name}</div>
         <div className="bg-white dark:bg-zinc-800 p-6 rounded-b-lg shadow-lg">
           <div className="flex justify-center space-x-4 mb-4">
             <button className="bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 py-2 px-4 rounded hover:shadow-2xl hover:shadow-primary">View Company</button>
             <button className="bg-primary hover:bg-blue-700 text-white py-2 px-4 rounded hover:shadow-2xl hover:shadow-primary">Apply This Job</button>
           </div>
           <div className="mb-4">
-            <p><strong>Minimum Qualification:</strong> Bachelor</p>
-            <p><strong>Experience Level:</strong> Mid level</p>
+            <p><strong>Minimum Qualification:</strong> {job.qualification}</p>
+            {/* <p><strong>Work Type:</strong> {job.workType}</p> */}
             <p><strong>Experience Length:</strong> {job.experience}</p>
             <p><strong>Location:</strong> {job.location}</p>
             <p><strong>Application Deadline:</strong>{formatPostDate(job.expiryDate)}</p>
