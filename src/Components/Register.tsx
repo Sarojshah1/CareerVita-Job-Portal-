@@ -19,11 +19,12 @@ const Register: React.FC = () => {
     mutationFn: (requestData: FormValues) => {
       return axios.post("http://localhost:8080/users", requestData);
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onSuccess: (data: any) => {
       const userId = data?.data?.userId;
       console.log(userId);
       alert(data?.message);
-      const values = data?.data; // Assuming your response structure has userId
+      const values = data?.data; 
       if (values.userType === '1') {
           navigate('/jobseeker', { state: { userId } });
       } else {

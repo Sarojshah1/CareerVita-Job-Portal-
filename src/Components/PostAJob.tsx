@@ -19,17 +19,17 @@ const PostAJob: React.FC = () => {
   // const parsedCompanyId = companyId ? parseInt(companyId, 10) : undefined;
   console.log(userId);
   const postedDate = new Date().toISOString();
-  // const initialState = {
-  //   jobTitle: '',
-  //   jobLocation: '',
-  //   jobType: 'Full Time',
-  //   workType: 'Remote',
-  //   salary: '',
-  //   experience: '',
-  //   applicationDeadline: null,
-  //   qualification: '',
-  //   jobDescription: ''
-  // };
+  const initialState = {
+    jobTitle: '',
+    jobLocation: '',
+    jobType: 'Full Time',
+    workType: 'Remote',
+    salary: '',
+    experience: '',
+    applicationDeadline: null,
+    qualification: '',
+    jobDescription: ''
+  };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,18 +45,19 @@ const PostAJob: React.FC = () => {
         location: jobLocation,
         job_Type: jobType,
         work_Type: workType,
-        salary: parseInt(salary), // Ensure salary is parsed as number if backend expects it
+        salary: parseInt(salary), 
         experience,
         postedDate:postedDate,
-        expiryDate: applicationDeadline, // Assuming backend expects expiryDate field
+        expiryDate: applicationDeadline, 
         qualification,
         description: jobDescription,
         companyId: companyid,
       });
 
       console.log('Job posted successfully:', response.data);
+      initialState("","","","","","","","","","","","","","","","");
 
-      // Optionally, you can redirect or show a success message here
+
     } catch (error) {
       console.error('Error posting job:', error);
       // Handle error, show error message, etc.

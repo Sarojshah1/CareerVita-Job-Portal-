@@ -14,6 +14,7 @@ export const useAuth = () => {
     setUserId(userId);
     setUserType(userType);
     setToken(token);
+    // window.location.reload();
     
   };
 
@@ -28,6 +29,7 @@ export const useAuth = () => {
     setToken(null);
     setJobSeekerId(null);
     setCompanyId(null);
+    // window.location.reload(true);
   };
 
   return { userId, userType, token, login, logout };

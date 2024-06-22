@@ -67,7 +67,7 @@ const Jobs: React.FC  = () => {
           return 'Yesterday';
         } else {
           // Return actual date if not today or yesterday
-          const options = { year: 'numeric', month: 'short', day: 'numeric' };
+          const options:Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
           return postDate.toLocaleDateString('en-US', options);
         }
       }

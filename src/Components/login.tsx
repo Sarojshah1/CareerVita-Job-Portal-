@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "./auth/useAuth";
+import { toast } from 'react-toastify';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -14,6 +15,8 @@ const Login: React.FC = () => {
   useEffect(() => {
     if(token){
       navigate("/");
+      window.location.reload();
+
     }
 
   },[login,navigate,token]);
@@ -37,26 +40,20 @@ const Login: React.FC = () => {
       localStorage.setItem("userId", userId);
       localStorage.setItem("userType", userType);
       localStorage.setItem("token", token);
+      toast.success(' successfully logged in .');
       
       console.log(response.data.data);
 
       if (userType === "1") {
-        navigate("/", { state: { userId } });
-        const jobseeker = await axios.get(
-          `http://localhost:8080/jobseekers/${userId}`);
-          console.log(jobseeker);
-          const jobseekerid=jobseeker.data.data;
-          localStorage.setItem("jobSeekerId", jobseekerid);
+          navigate("/", { state: { userId } });
+         
 
       } else {
-        const company = await axios.get(
-          `http://localhost:8080/api/companies/company/${userId}`);
-          console.log(company);
-          const companyid=company.data.data;
-          localStorage.setItem("companyId", companyid);
         navigate("/", { state: { userId } });
+      
+        window.location.reload();
       }
-      // setIsLoggedIn(true);
+
       window.location.reload();
     } catch (error) {
       setError("Invalid email or password");

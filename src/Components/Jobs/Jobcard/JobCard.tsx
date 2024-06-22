@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../auth/useAuth';
+import { toast } from 'react-toastify';
 
 interface jobcomponent{
     id: number;
@@ -63,7 +64,16 @@ const JobCard:React.FC<jobcomponent> = ({id,title,work_Type,job_Type,description
   const handleViewDetails = () => {
     navigate(`/details/${id}`, { state: { title, job_Type, postedDate, location, salary, work_Type, description,expiryDate,experience,name,qualification } });
   };
+
+  
   const handleApply = async () => {
+    if (!userId) {
+      // User is not logged in, navigate to login page
+      navigate('/login');
+      // Show toast message indicating login requirement
+      toast.warning('Please login first to apply.');
+      return;
+    }
     const jobSeeker = await axios.get(
       `http://localhost:8080/jobseekers/user/${userId}`);
       console.log(jobSeeker);

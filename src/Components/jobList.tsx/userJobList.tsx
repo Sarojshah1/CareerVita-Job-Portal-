@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEye } from 'react-icons/fa';
 import { useAuth } from "../auth/useAuth";
+import Modal from 'react-modal';
 import axios from "axios";
 
 interface Job {
@@ -12,28 +13,14 @@ interface Job {
 }
 
 
+
 const UserJobList: React.FC = () => {
   const { userId } = useAuth();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [jobSeekerId, setJobSeekerId] = useState<number | null>(null);
-
-    // const dummyJobs: Job[] = [
-      //   { id: 1, title: 'Laravel Developer', jobType: 'Full Time', postedDate: '12/06/2022', applicationDeadline: '12/06/2024' },
-      //   { id: 2, title: 'React Developer', jobType: 'Part Time', postedDate: '15/06/2022', applicationDeadline: '12/06/2024' },
-      //   { id: 3, title: 'Node.js Developer', jobType: 'Full Time', postedDate: '18/06/2022', applicationDeadline: '12/06/2024' },
-      //   { id: 4, title: 'Frontend Developer', jobType: 'Contract', postedDate: '20/06/2022', applicationDeadline: '12/06/2024' },
-      //   { id: 5, title: 'UI/UX Designer', jobType: 'Remote', postedDate: '22/06/2022', applicationDeadline: '12/06/2024' },
-      //   { id: 6, title: 'Java Developer', jobType: 'Full Time', postedDate: '25/06/2022', applicationDeadline: '12/06/2024' },
-      //   { id: 7, title: 'Python Developer', jobType: 'Part Time', postedDate: '28/06/2022', applicationDeadline: '12/06/2024' },
-      //   { id: 8, title: 'Backend Engineer', jobType: 'Full Time', postedDate: '30/06/2022', applicationDeadline: '12/06/2024' },
-      //   { id: 9, title: 'DevOps Engineer', jobType: 'Contract', postedDate: '02/07/2022', applicationDeadline: '12/06/2024' },
-      //   { id: 10, title: 'Software Architect', jobType: 'Remote', postedDate: '05/07/2022', applicationDeadline: '12/06/2024' },
-      //   { id: 11, title: 'Software Architect', jobType: 'Remote', postedDate: '05/07/2022', applicationDeadline: '12/06/2024' },
-      //   { id: 12, title: 'Software Architect', jobType: 'Remote', postedDate: '05/07/2022', applicationDeadline: '12/06/2024' },
-      //   { id: 13, title: 'Software Architect', jobType: 'Remote', postedDate: '05/07/2022', applicationDeadline: '12/06/2024' },
-      //   { id: 14, title: 'Software Architect', jobType: 'Remote', postedDate: '05/07/2022', applicationDeadline: '12/06/2024' },
-      //   { id: 15, title: 'Software Architect', jobType: 'Remote', postedDate: '05/07/2022', applicationDeadline: '12/06/2024' },
-      // ];
+  // const [jobSeeker, setJobSeeker] = useState<JobSeeker | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [resumeContent, setResumeContent] = useState<string | null>(null);
       useEffect(() => {
         const fetchJobs = async () => {
           const jobSeeker = await axios.get(
@@ -41,6 +28,7 @@ const UserJobList: React.FC = () => {
             console.log(jobSeeker);
             const jobSeekerId=jobSeeker.data.data.jobSeekerId;
             setJobSeekerId(jobSeekerId);
+            // setJobSeeker(jobSeeker.data.data)
             console.log(jobSeekerId);
           try {
             const response = await axios.get<Job[]>(`http://localhost:8080/api/user-job-listings/job-seeker/${jobSeekerId}/job-listings`);
@@ -66,10 +54,27 @@ const UserJobList: React.FC = () => {
             return 'Yesterday';
           } else {
             // Return actual date if not today or yesterday
-            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            const options:Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
             return postDate.toLocaleDateString('en-US', options);
           }
         }
+      };
+
+      const viewResume = async (jobSeekerId: number) => {
+        try {
+          const response = await axios.get(`http://localhost:8080/jobseekers/${jobSeekerId}/resume`, { responseType: 'arraybuffer' });
+          const file = new Blob([response.data], { type: response.headers['content-type'] });
+          const fileURL = URL.createObjectURL(file);
+          setResumeContent(fileURL);
+          setIsModalOpen(true);
+        } catch (error) {
+          console.error('Error fetching resume:', error);
+        }
+      };
+    
+      const closeModal = () => {
+        setIsModalOpen(false);
+        setResumeContent(null);
       };
       
 
@@ -99,7 +104,7 @@ const UserJobList: React.FC = () => {
                 Application Deadline
               </th>
               <th className="py-2 px-4 text-left text-sm font-medium text-white dark:text-zinc-200">
-                Action
+                Resume
               </th>
             </tr>
           </thead>
@@ -120,12 +125,10 @@ const UserJobList: React.FC = () => {
                 </td>
                 <td className="py-2 px-4 text-sm text-zinc-700 dark:text-zinc-300">
                   <div className="flex space-x-2">
-                    <button className="text-blue-500 hover:text-blue-700">
-                      <FaEdit />
+                    <button onClick={() => jobSeekerId && viewResume(jobSeekerId)} className=" items-center text-blue-500 hover:text-blue-700">
+                      <FaEye />
                     </button>
-                    <button className="text-red-500 hover:text-red-700">
-                      <FaTrash />
-                    </button>
+                    
                   </div>
                 </td>
               </tr>
@@ -133,6 +136,18 @@ const UserJobList: React.FC = () => {
           </tbody>
         </table>
       </div>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="Resume Viewer"
+        className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75"
+        overlayClassName="fixed inset-0 bg-gray-800 bg-opacity-75"
+      >
+        {resumeContent && (
+          <iframe src={resumeContent} className="w-full h-full" title="Resume Viewer" />
+        )}
+        <button onClick={closeModal} className="absolute top-0 right-0 p-2 text-white">Close</button>
+      </Modal>
     </div>
   );
 };

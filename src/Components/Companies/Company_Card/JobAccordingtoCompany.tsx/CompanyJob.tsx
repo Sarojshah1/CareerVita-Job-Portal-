@@ -20,22 +20,15 @@ interface Job {
   };
 }
 
-// const jobData: Job[] = Array.from({ length: 50 }, (_, index) => ({
-//   id: index + 1,
-//   title: `Job Title ${index + 1}`,
-//   jobtype: 'Fulltime',
-//   postday: 'Today',
-//   location: 'Kathmandu',
-//   salary: `Npr.${40000 + index * 1000}`,
-//   worktype: 'Remote',
-//   description: `Description for job ${index + 1}: We are looking for a developer that will be the liaison between the company and its current and potential customers. The successful candidate...`,
-// }));
+
+
 
 const CompanyJob: React.FC  = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const location = useLocation();
   const [jobData, setJobData] = useState<Job[]>([]);
   const { companyId } = location.state as { companyId:number };
+  
 
     const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(event.target.value);
@@ -78,7 +71,7 @@ const CompanyJob: React.FC  = () => {
         if (postDate.toDateString() === yesterday.toDateString()) {
           return 'Yesterday';
         } else {
-          const options = { year: 'numeric', month: 'short', day: 'numeric' };
+          const options:Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
           return postDate.toLocaleDateString('en-US', options);
         }
       }

@@ -66,7 +66,7 @@ const UserProfile:React.FC = () => {
     }
 
     try {
-      await apiCall.mutateAsync(formData); // Use mutateAsync for asynchronous mutation calls
+      await apiCall.mutateAsync(formData); 
       alert('Profile data submitted successfully.');
       navigate('/');
     } catch (error) {
@@ -110,7 +110,7 @@ const UserProfile:React.FC = () => {
               </div>
               <div>
                 <label htmlFor="resume" className="block text-sm font-medium text-zinc-700">Resume</label>
-                <input type="file" id="resume"{...register('resume', { required: 'Resume is required' })} className="mt-1 block w-full border border-zinc-300 rounded-md shadow-sm p-2"/>
+                <input type="file" id="resume"{...register('resume', { required: 'Resume is required' })} className="mt-1 block w-full border border-zinc-300 rounded-md shadow-sm p-2" placeholder='upload pdf file'/>
                 {errors.resume && <p className="text-red-600">{errors.resume.message}</p>}
               </div>
               <div className="col-span-1 md:col-span-2 flex justify-center mt-4">

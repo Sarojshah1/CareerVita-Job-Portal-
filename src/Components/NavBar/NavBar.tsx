@@ -4,18 +4,22 @@ import { FaBars,FaUser} from "react-icons/fa6";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/useAuth";
 import { FaTimes } from "react-icons/fa";
+import { toast } from 'react-toastify';
 
 const NavBar = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { userId, userType, logout } = useAuth();
   console.log(userType);
+ 
 
   const onsubmit = () => {
     if (userId) {
       navigate("/postajob");
+      
     } else {
       navigate("/login");
+      toast.warning("login first");
     }
   };
   const onupdateprofile=()=>{
@@ -25,6 +29,15 @@ const NavBar = () => {
       navigate("/companyProfile",{state: userId});
     }
   }
+  const checkAuth = () => {
+    const isAuthenticated = localStorage.getItem("token"); // Example using localStorage
+    // if(!isAuthenticated){
+    //   // toast.warning("login first");
+    //   // navigate("/login");
+
+    // }
+    return isAuthenticated ? true : false;
+  };
 
 
   const navitems = [
@@ -32,7 +45,12 @@ const NavBar = () => {
     { link: "Category", path: "Catagories" },
     { link: "Jobs", path: "jobs" },
     { link: "Company", path: "company" },
-    { link: "my Job List", path: "userjoblist" },
+    { link: "my Job List", path: checkAuth() ? (
+      "userjoblist"
+    ) : (
+      "login"
+      
+    ) },
   ];
 
   // const [data] = useState(navitems);
@@ -43,6 +61,7 @@ const NavBar = () => {
   const handleLogout = () => {
     logout();
     navigate("/login"); 
+    
   };
   return (
     <nav className="bg-white shadow-container md:px-14 p-4 max-w-screen-2x1 mx-auto text-primary">

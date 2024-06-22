@@ -15,6 +15,7 @@ import UserProfile from "./Components/UserProfile/UserProfile";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import CompanyJob from "./Components/Companies/Company_Card/JobAccordingtoCompany.tsx/CompanyJob";
 import UserJobList from "./Components/jobList.tsx/userJobList";
+import 'react-toastify/dist/ReactToastify.css';
 
 const AppLayout = () => (
   <>
