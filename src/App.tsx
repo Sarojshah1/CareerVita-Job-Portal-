@@ -16,6 +16,8 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import CompanyJob from "./Components/Companies/Company_Card/JobAccordingtoCompany.tsx/CompanyJob";
 import UserJobList from "./Components/jobList.tsx/userJobList";
 import 'react-toastify/dist/ReactToastify.css';
+import CompanyJobList from "./Components/ComapnyJobList/CompanyJobList";
+import Applicant from "./Components/ComapnyJobList/Applicant";
 
 const AppLayout = () => (
   <>
@@ -83,6 +85,16 @@ function App() {
         {
           path: '/company/jobs',
           element: <CompanyJob  />,
+        },
+        {
+          path: '/company/jobList',
+          element: checkAuth() ?(<CompanyJobList  />): (
+            <Navigate to="/login" />
+          ),
+        },
+        {
+          path: '/company/applicants',
+          element: <Applicant  />,
         },
         {
           path: '/userjoblist',

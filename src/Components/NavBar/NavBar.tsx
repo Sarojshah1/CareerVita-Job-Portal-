@@ -38,6 +38,12 @@ const NavBar = () => {
     // }
     return isAuthenticated ? true : false;
   };
+  const getNavPath = () => {
+    if (!checkAuth()) {
+      return "login";
+    }
+    return userType === "1" ? "userjoblist" : "company/jobList";
+  };
 
 
   const navitems = [
@@ -45,12 +51,7 @@ const NavBar = () => {
     { link: "Category", path: "Catagories" },
     { link: "Jobs", path: "jobs" },
     { link: "Company", path: "company" },
-    { link: "my Job List", path: checkAuth() ? (
-      "userjoblist"
-    ) : (
-      "login"
-      
-    ) },
+    { link: "my Job List", path: getNavPath()  },
   ];
 
   // const [data] = useState(navitems);
