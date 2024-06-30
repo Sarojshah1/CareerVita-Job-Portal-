@@ -7,7 +7,9 @@ The Job Portal project aims to provide a user-friendly platform for job seekers 
 
 ## Features
 
-- **Profile Management:** -Create and manage your personal profile.-Edit profile details such as contact information, skills, and experience.
+- **Profile Management:**
+     -Create and manage your personal profile.
+     -Edit profile details such as contact information, skills, and experience.
 - **User Profiles:** Create, edit, and manage user profiles.
 - **Applications:** Apply for jobs and track application status.
 - **Admin Dashboard:** Manage job listings and user accounts.
