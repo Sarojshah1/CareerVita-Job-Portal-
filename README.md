@@ -3,16 +3,13 @@ CareerVista is a comprehensive job portal designed to connect job seekers with e
 
 ## Job Portal Project Overview
 
-The Job Portal project aims to provide a user-friendly platform for job seekers to find suitable employment opportunities and for employers to manage their job postings and applicant interactions efficiently. Key features include advanced job search, application tracking, and employer management tools.
+The CareerVita Job Portal project aims to provide a user-friendly platform for job seekers to find suitable employment opportunities and for employers to manage their job postings and applicant interactions efficiently. Key features include advanced job search, application tracking, and employer management tools.
 
 ## Features
-
+### For Job Seekers
 - **Profile Management:**
-     -Create and manage your personal profile.
-     -Edit profile details such as contact information, skills, and experience.
-- **User Profiles:** Create, edit, and manage user profiles.
-- **Applications:** Apply for jobs and track application status.
-- **Admin Dashboard:** Manage job listings and user accounts.
+   1.Create and manage your personal profile.
+   2.Edit profile details such as contact information, skills, and experience.
 
 ## Technologies Used
 
