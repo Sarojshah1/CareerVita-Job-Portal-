@@ -28,11 +28,13 @@ The CareerVita Job Portal project aims to provide a user-friendly platform for j
 ## Getting Started
 
 1. Clone the repository:
-   git clone https://github.com/your-username/job-portal.git
+   git clone: https://github.com/Sarojshah1/CareerVita-Job-Portal-.git (For Frontend)
+   git clone: 
 2.Install dependencies:
-   cd job-portal
+   cd CareerVita-Job-Portal
    npm install
 3.Configure environment variables:
-
-Create a .env file in the root directory.
-Add necessary environment variables.
+  Create a .env file in the root directory.
+  Add necessary environment variables.
+4.Run the application
+  Start the frontend and backend servers according to your setup.
