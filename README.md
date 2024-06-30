@@ -17,19 +17,17 @@ The CareerVita Job Portal project aims to provide a user-friendly platform for j
 - **Auto Mail Generation:** Automatically generate emails to notify job seekers of application status updates, interview invitations, and rejections.
 - **Interview Selection:** Authenticate and select candidates for interview rounds directly through the platform.
 
-### Other Features
-- ****
 
 ## Technologies Used
 
 - **Frontend:** React, Tailwind CSS, Axios
 - **Backend:** Spring Boot, PostgreSQL
-- 
+
 ## Getting Started
 
 1. Clone the repository:
    git clone: https://github.com/Sarojshah1/CareerVita-Job-Portal-.git (For Frontend)
-   git clone: 
+   git clone: https://github.com/Sarojshah1/Job_Board.git (For Backend)
 2.Install dependencies:
    cd CareerVita-Job-Portal
    npm install
