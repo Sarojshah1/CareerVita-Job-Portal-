@@ -1,30 +1,32 @@
-# React + TypeScript + Vite
+# CareerVita (Job Portal)
+A job portal application built with React, Spring Boot, and PostgreSQL.A comprehensive job portal designed to connect job seekers and employers.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Job Portal Project Overview
 
-Currently, two official plugins are available:
+The Job Portal project aims to provide a user-friendly platform for job seekers to find suitable employment opportunities and for employers to manage their job postings and applicant interactions efficiently. Key features include advanced job search, application tracking, and employer management tools.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **Job Listings:** Browse and search for available job openings.
+- **User Profiles:** Create, edit, and manage user profiles.
+- **Applications:** Apply for jobs and track application status.
+- **Admin Dashboard:** Manage job listings and user accounts.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Technologies Used
 
-- Configure the top-level `parserOptions` property like this:
+- **Frontend:** React, Tailwind CSS, Axios
+- **Backend:** Spring Boot, PostgreSQL
+- **Authentication:** Firebase Authentication
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+## Getting Started
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/job-portal.git
+2.Install dependencies:
+   cd job-portal
+   npm install
+3.Configure environment variables:
+
+Create a .env file in the root directory.
+Add necessary environment variables.
