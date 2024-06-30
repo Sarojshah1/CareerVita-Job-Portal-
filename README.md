@@ -7,20 +7,27 @@ The CareerVita Job Portal project aims to provide a user-friendly platform for j
 
 ## Features
 ### For Job Seekers
-- **Profile Management:**
-   1.Create and manage your personal profile.
-   2.Edit profile details such as contact information, skills, and experience.
+- **Profile Management:** Create and manage your personal profile.Edit profile details such as contact information, skills, and experience.
+- **Application Management:** Apply to job openings with a single click.Track application status and receive updates.
+- **Job Filtering:** Filter job listings based on criteria such as location, industry, and job type.
+### For Employers
+- **Job Management:** Add, edit, and manage job listings.View applications and manage applicant interactions.
+- **Company Profile Management:** Create and edit company profiles.Showcase company information to potential applicants.
+- **Resume Access:** View applicant resumes and profiles to evaluate candidates.
+- **Auto Mail Generation:** Automatically generate emails to notify job seekers of application status updates, interview invitations, and rejections.
+- **Interview Selection:** Authenticate and select candidates for interview rounds directly through the platform.
+
+### Other Features
+- ****
 
 ## Technologies Used
 
 - **Frontend:** React, Tailwind CSS, Axios
 - **Backend:** Spring Boot, PostgreSQL
-- **Authentication:** Firebase Authentication
-
+- 
 ## Getting Started
 
 1. Clone the repository:
-   ```bash
    git clone https://github.com/your-username/job-portal.git
 2.Install dependencies:
    cd job-portal
