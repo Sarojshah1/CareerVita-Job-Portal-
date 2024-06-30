@@ -1,5 +1,5 @@
 # CareerVita (Job Portal)
-A job portal application built with React, Spring Boot, and PostgreSQL.A comprehensive job portal designed to connect job seekers and employers.
+CareerVista is a comprehensive job portal designed to connect job seekers with employers efficiently. The platform provides robust features for both job seekers and employers to manage their profiles, job listings, applications, and more.This application is built with React, Spring Boot, and PostgreSQL.
 
 ## Job Portal Project Overview
 
@@ -7,7 +7,7 @@ The Job Portal project aims to provide a user-friendly platform for job seekers 
 
 ## Features
 
-- **Job Listings:** Browse and search for available job openings.
+- **Profile Management:** -Create and manage your personal profile.-Edit profile details such as contact information, skills, and experience.
 - **User Profiles:** Create, edit, and manage user profiles.
 - **Applications:** Apply for jobs and track application status.
 - **Admin Dashboard:** Manage job listings and user accounts.
