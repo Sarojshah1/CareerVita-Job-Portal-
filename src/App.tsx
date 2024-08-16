@@ -18,6 +18,8 @@ import UserJobList from "./Components/jobList.tsx/userJobList";
 import 'react-toastify/dist/ReactToastify.css';
 import CompanyJobList from "./Components/ComapnyJobList/CompanyJobList";
 import Applicant from "./Components/ComapnyJobList/Applicant";
+import UpdateUserProfile from "./Components/updatedetails/UpdateUserDetails";
+import CompanyPage from "./Components/CompanyPage/CompanyPage";
 
 const AppLayout = () => (
   <>
@@ -87,8 +89,18 @@ function App() {
           element: <CompanyJob  />,
         },
         {
+          path: '/view_company',
+          element: <CompanyPage  />,
+        },
+        {
           path: '/company/jobList',
           element: checkAuth() ?(<CompanyJobList  />): (
+            <Navigate to="/login" />
+          ),
+        },
+        {
+          path: '/update/userProfile',
+          element: checkAuth() ?(<UpdateUserProfile  />): (
             <Navigate to="/login" />
           ),
         },

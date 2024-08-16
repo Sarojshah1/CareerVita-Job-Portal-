@@ -24,7 +24,7 @@ const UserJobList: React.FC = () => {
       useEffect(() => {
         const fetchJobs = async () => {
           const jobSeeker = await axios.get(
-            `http://localhost:8080/jobseekers/user/${userId}`);
+            `http://localhost:8080/api/jobseekers/user/${userId}`);
             console.log(jobSeeker);
             const jobSeekerId=jobSeeker.data.data.jobSeekerId;
             setJobSeekerId(jobSeekerId);
@@ -62,7 +62,7 @@ const UserJobList: React.FC = () => {
 
       const viewResume = async (jobSeekerId: number) => {
         try {
-          const response = await axios.get(`http://localhost:8080/jobseekers/${jobSeekerId}/resume`, { responseType: 'arraybuffer' });
+          const response = await axios.get(`http://localhost:8080/api/jobseekers/${jobSeekerId}/resume`, { responseType: 'arraybuffer' });
           const file = new Blob([response.data], { type: response.headers['content-type'] });
           const fileURL = URL.createObjectURL(file);
           setResumeContent(fileURL);

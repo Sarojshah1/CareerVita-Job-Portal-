@@ -1,5 +1,8 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../auth/useAuth';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 
@@ -7,9 +10,39 @@ const Details: React.FC = () => {
 
     const location = useLocation();
     const job = location.state;
-    console.log(job.name);
-    
+    console.log(job);
+    const { userId } = useAuth(); // Assume this hook gives you the userId if logged in
+    const [isLoading, setIsLoading] = useState(false);
+    const [jobSeekerId, setJobSeekerId] = useState<number | null>(null);
+    const navigate=useNavigate()
+    const [isApplied, setIsApplied] = useState(false);
+    console.log(job.companyId)
 
+    useEffect(() => {
+      // console.log(job)
+      if (userId) {
+        const fetchJobSeekerId = async () => {
+          try {
+            const response = await axios.get(`http://localhost:8080/jobseekers/user/${userId}`);
+            setJobSeekerId(response.data.data.jobSeekerId);
+           
+              const responseapplied = await axios.get(`http://localhost:8080/api/user-job-listings/check-applied`, {
+                params: {
+                  jobSeekerId,
+                  jobId: job.id,
+                },
+              });
+              console.log(responseapplied)
+              setIsApplied(responseapplied.data);
+            
+          } catch (error) {
+            console.error('Error fetching job seeker ID:', error);
+          }
+        };
+  
+        fetchJobSeekerId();
+      }
+    }, [userId]);
     if (!job) {
       return <div>Job details not found</div>;
     }
@@ -32,18 +65,49 @@ const Details: React.FC = () => {
       }
     };
 
+    const applyForJob = async () => {
+      if (!userId) {
+        // User is not logged in, navigate to login page
+        navigate('/login');
+        // Show toast message indicating login requirement
+        toast.warning('Please login first to apply.');
+        return;
+      }
+  
+      setIsLoading(true);
+      try {
+        await axios.post(`http://localhost:8080/api/user-job-listings`, {
+          jobSeekerId,
+          jobId: job.id,
+        });
+        toast.success('Successfully applied for the job.');
+      } catch (error) {
+        console.error('Error applying for job:', error);
+        toast.error('Failed to apply for the job.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    const handleViewCompany = () => {
+      navigate(`/view_company`, {
+        state: { companyId: job.companyId },
+      });
+    };
+
     return (
         <div className="bg-zinc-100 dark:bg-zinc-900 p-4 md:p-8 rounded-lg">
-          <div className="bg-primary text-white   text-center text-2xl font-semibold   py-6 rounded w-full">{job.title} (Full time) – {job.name}</div>
+          <div className="bg-primary text-white   text-center text-2xl font-semibold   py-6 rounded w-full">{job.title} ({job.work_Type}) – {job.name}</div>
         <div className="bg-white dark:bg-zinc-800 p-6 rounded-b-lg shadow-lg">
           <div className="flex justify-center space-x-4 mb-4">
-            <button className="bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 py-2 px-4 rounded hover:shadow-2xl hover:shadow-primary">View Company</button>
-            <button className="bg-primary hover:bg-blue-700 text-white py-2 px-4 rounded hover:shadow-2xl hover:shadow-primary">Apply This Job</button>
+            <button className="bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 py-2 px-4 rounded hover:shadow-2xl hover:shadow-primary" onClick={handleViewCompany}>View Company</button>
+            <button className="bg-primary hover:bg-blue-700 text-white py-2 px-4 rounded hover:shadow-2xl hover:shadow-primary" onClick={applyForJob}
+            disabled={isLoading}> {isApplied ? 'Applied' : isLoading ? 'Loading...' : 'Apply This Job'}</button>
           </div>
           <div className="mb-4">
             <p><strong>Minimum Qualification:</strong> {job.qualification}</p>
             {/* <p><strong>Work Type:</strong> {job.workType}</p> */}
             <p><strong>Experience Length:</strong> {job.experience}</p>
+            <p><strong>Job Type:</strong> {job.job_Type}</p>
             <p><strong>Location:</strong> {job.location}</p>
             <p><strong>Application Deadline:</strong>{formatPostDate(job.expiryDate)}</p>
             <p><strong>Salary:</strong> {job.salary}</p>

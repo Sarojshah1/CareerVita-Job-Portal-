@@ -10,6 +10,8 @@ interface JobSeeker {
     firstName:string;
     lastName:string;
     contactNumber:string;
+    isSelected: boolean; 
+    // selected:boolean;
   
 }
 
@@ -31,9 +33,19 @@ const Applicant: React.FC = () => {
        
 
         const response = await axios.get<JobSeeker[]>(
-          `http://localhost:8080/api/user-job-listings/job/${jobId}/job-seekers`
+          `http://localhost:8080/api/user-job-listings/job/${jobId}`
         );
         console.log(response);
+      //   const selectedStatusPromises = response.data.data.map(async (jobSeeker) => {
+      //     const { data: isSelected } = await axios.get<boolean>(
+      //         `http://localhost:8080/api/user-job-listings/check-applied`,
+      //         { params: { jobSeekerId: jobSeeker.jobSeekerId, jobId: jobId } }
+      //     );
+      //     return { ...jobSeeker, isSelected };
+      // });
+      // console.log(selectedStatusPromises);
+      // const jobSeekersWithSelection = await Promise.all(selectedStatusPromises);
+      // console.log(jobSeekersWithSelection);
         setJobs(response.data.data);
         console.log(jobs);
       } catch (error) {
@@ -48,7 +60,7 @@ const Applicant: React.FC = () => {
 
   const viewResume = async (jobSeekerId: number) => {
     try {
-      const response = await axios.get(`http://localhost:8080/jobseekers/${jobSeekerId}/resume`, { responseType: 'arraybuffer' });
+      const response = await axios.get(`http://localhost:8080/api/jobseekers/${jobSeekerId}/resume`, { responseType: 'arraybuffer' });
       const file = new Blob([response.data], { type: response.headers['content-type'] });
       const fileURL = URL.createObjectURL(file);
       setResumeContent(fileURL);
@@ -63,24 +75,29 @@ const Applicant: React.FC = () => {
     setResumeContent(null);
   };
   const selectApplicant = async (jobSeekerId: number) => {
+    console.log(jobSeekerId);
     setIsLoading(true);
     try {
-        // Update backend to mark applicant as selected for interview
-        await axios.put(`http://localhost:8080/api/user-job-listings/${jobSeekerId}/selected?selected=true`);
         
-        // Update UI state to reflect selection
-        setSelectedApplicants((prevSelected) => {
-            if (prevSelected.includes(jobSeekerId)) {
-                return prevSelected.filter((id) => id !== jobSeekerId);
-            } else {
-                return [...prevSelected, jobSeekerId];
-            }
-        });
-    } catch (error) {
-        console.error('Error selecting applicant for interview:', error);
-    }finally {
-        setIsLoading(false); // Reset loading state
-    }
+      await axios.put(`http://localhost:8080/api/user-job-listings/updateSelected`, null, {
+        params: {
+          jobSeekerId,
+            jobId,
+            selected: true
+        }
+    });
+    setSelectedApplicants(prevSelected => [...prevSelected, jobSeekerId]);
+        
+    // setJobs((prevJobs) =>
+    //   prevJobs.map((job) =>
+    //       job.jobSeekerId === jobSeekerId ? { ...job, selected: true } : job
+    //   )
+  // );
+} catch (error) {
+  console.error('Error selecting applicant for interview:', error);
+} finally {
+  setIsLoading(false);
+}
 };
 
   return (
@@ -114,37 +131,41 @@ const Applicant: React.FC = () => {
             {jobs.map((job) => (
               <tr key={job.jobSeekerId} className="border-b dark:border-zinc-600">
                 <td className="py-2 px-4 text-sm text-zinc-700 dark:text-zinc-300">
-                  {job.firstName}
+                  {job.jobSeeker.firstName}
                 </td>
                 <td className="py-2 px-4 text-sm text-zinc-700 dark:text-zinc-300">
-                  {job.lastName}
+                  {job.jobSeeker.lastName}
                 </td>
                 
                 <td className="py-2 px-4 text-sm text-zinc-700 dark:text-zinc-300">
-                  {job.contactNumber}
+                  {job.jobSeeker.contactNumber}
                 </td>
                 <td className="py-2 px-4 text-sm text-zinc-700 dark:text-zinc-300">
                   <div className="flex space-x-2">
-                    <button onClick={() => viewResume(job.jobSeekerId)} className="items-center text-blue-500 hover:text-blue-700">
+                    <button onClick={() => viewResume(job.jobSeeker.jobSeekerId)} className="items-center text-blue-500 hover:text-blue-700">
                       <FaEye />
                     </button>
                   </div>
                 </td>
 
                 <td className="py-2 px-4 text-sm text-zinc-700 dark:text-zinc-300">
-                                    <button
-                                        onClick={() => selectApplicant(job.jobSeekerId)}
-                                        className={`px-4 py-2 rounded-md ${
-                                            isLoading
-                                                ? 'bg-gray-400 text-gray-700 cursor-not-allowed'
-                                                : selectedApplicants.includes(job.jobSeekerId)
-                                                    ? 'bg-primary text-white'
+                                    {job.selected ? (
+                                        <button className="px-4 py-2 rounded-md bg-primary text-white cursor-not-allowed">
+                                            Selected
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={() => selectApplicant(job.jobSeeker.jobSeekerId)}
+                                            className={`px-4 py-2 rounded-md ${
+                                                isLoading
+                                                    ? 'bg-gray-400 text-gray-700 cursor-not-allowed'
                                                     : 'bg-gray-300 text-gray-800'
-                                        }`}
-                                        disabled={isLoading || selectedApplicants.includes(job.jobSeekerId)}
-                                    >
-                                        {isLoading ? 'Loading...' : selectedApplicants.includes(job.jobSeekerId) ? 'Selected' : 'Select'}
-                                    </button>
+                                            }`}
+                                            disabled={isLoading}
+                                        >
+                                            {isLoading ? 'Loading...' : 'Select'}
+                                        </button>
+                                    )}
                                 </td>
               </tr>
             ))}

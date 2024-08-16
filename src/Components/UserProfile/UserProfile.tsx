@@ -24,7 +24,7 @@ const UserProfile:React.FC = () => {
     mutationKey: ["SAVE_JOB_SEEKER_DATA"],
     mutationFn: async (formData: FormData) => {
       try {
-        const response = await axios.post("http://localhost:8080/jobseekers", formData,{
+        const response = await axios.post("http://localhost:8080/api/jobseekers", formData,{
 
             headers: {
               'Content-Type': 'multipart/form-data',

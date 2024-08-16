@@ -11,13 +11,13 @@ type FormValues = {
   password: string;
   userType: string;
 };
-const Register: React.FC = () => {
+const Register: React.FC = () => {         
   const navigate = useNavigate();
   const { register, handleSubmit,formState: { errors } } = useForm<FormValues>();
   const apiCall = useMutation({
     mutationKey: ["SAVE_USER_DATA"],
     mutationFn: (requestData: FormValues) => {
-      return axios.post("http://localhost:8080/users", requestData);
+      return axios.post("http://localhost:8080/api/users", requestData);
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onSuccess: (data: any) => {

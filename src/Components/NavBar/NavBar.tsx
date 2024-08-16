@@ -24,7 +24,7 @@ const NavBar = () => {
   };
   const onupdateprofile=()=>{
     if(userType ==="1"){
-      navigate("/jobseeker",{state: userId});
+      navigate("/update/userProfile",{state: userId});
     }else{
       navigate("/companyProfile",{state: userId});
     }

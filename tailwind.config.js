@@ -9,7 +9,8 @@ export default {
       colors:{
         "primary":"#335E85",
         "forgrount":"#ffff",
-        "bannercolor":"#E6F8DE"
+        "bannercolor":"#E6F8DE",
+        "red":"#EE4B2B",
         
       },
       container:{
